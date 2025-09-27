@@ -8,6 +8,8 @@ import Link from 'next/link'
 import { Button } from '../ui/button'
 import useScroll from '@/lib/hooks/useScroll'
 import { NAV_ITEMS } from '@/constants/navItems'
+import { ClerkLoaded, SignedIn, SignedOut, SignInButton, SignOutButton, UserButton } from '@clerk/nextjs'
+import { LogIn } from 'lucide-react'
 
 function Nav() {
     const { isScrolled } = useScroll({ scrollAmount: 50 })
@@ -32,7 +34,17 @@ function Nav() {
                         </NavigationMenuList>
                     </NavigationMenu>
                 </div>
-                <div className='hidden lg:flex'>
+                <div className='hidden lg:flex items-center gap-5'>
+                    <ClerkLoaded>
+                        <SignedOut>
+                            <SignInButton mode='modal'>
+                                <LogIn className='size-6 cursor-pointer' />
+                            </SignInButton>
+                        </SignedOut>
+                        <SignedIn>
+                            <UserButton />
+                        </SignedIn>
+                    </ClerkLoaded>
                     <Button asChild>
                         <Link href={"/sklep"}>
                             Kup teraz
