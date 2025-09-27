@@ -1,3 +1,5 @@
+import Nav from "@/components/common/Nav";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -5,6 +7,7 @@ export default function RootLayout({
 }>) {
   return (
     <>
+        <Nav />
         <main>
             {children}
         </main>
