@@ -3,6 +3,7 @@ import Container from '../ui/container'
 import { Button } from '../ui/button'
 import Link from 'next/link'
 import Image from 'next/image'
+import { CIASTKA_IMG } from '@/constants/images'
 
 function Hero() {
   return (
@@ -24,7 +25,7 @@ function Hero() {
                 </div>
                 <div className='flex flex-col justify-center'>
                     <figure className='relative w-full max-w-[600px] mx-auto aspect-video'>
-                        <Image src={"/ciastka.jpg"} alt='Ciastka' fill className='rounded-2xl' />
+                        <Image src={CIASTKA_IMG.src} alt={CIASTKA_IMG.alt} fill className='rounded-2xl' />
                     </figure>
                 </div>
             </div>
