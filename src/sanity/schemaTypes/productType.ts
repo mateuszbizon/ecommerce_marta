@@ -59,7 +59,13 @@ export const productType = defineType({
             title: "Ilość",
             type: "number",
             validation: (rule) => rule.min(0)
-        })
+        }),
+        defineField({
+            name: "isFeatured",
+            title: "Czy produkt ma być wyróżniony",
+            type: "boolean",
+            initialValue: false
+        }),
     ],
     preview: {
         select: {

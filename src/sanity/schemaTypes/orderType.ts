@@ -25,12 +25,6 @@ export const orderType = defineType({
             validation: (rule) => rule.required()
         }),
         defineField({
-            name: "clerkUserId",
-            title: "Store User Id",
-            type: "string",
-            validation: (rule) => rule.required()
-        }),
-        defineField({
             name: "customerName",
             title: "Imię i nazwisko zamawiającego",
             type: "string",
@@ -158,6 +152,12 @@ export const orderType = defineType({
             title: "Data zamówienia",
             type: "datetime",
             validation: (rule) => rule.required()
+        }),
+        defineField({
+            name: "user",
+            title: "Użytkownik",
+            type: "reference",
+            to: [{ type: "user" }],
         }),
     ],
     preview: {
