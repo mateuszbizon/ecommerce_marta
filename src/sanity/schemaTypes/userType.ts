@@ -2,7 +2,7 @@ import {UserIcon} from '@sanity/icons'
 import {defineArrayMember, defineField, defineType} from 'sanity'
 
 export const userType = defineType({
-  name: 'author',
+  name: 'user',
   title: 'Użytkownicy',
   type: 'document',
   icon: UserIcon,
@@ -18,12 +18,9 @@ export const userType = defineType({
       title: "Adres email"
     }),
     defineField({
-      name: 'image',
-      type: 'image',
-      title: "Zdjęcie",
-      options: {
-        hotspot: true,
-      },
+      name: 'clerkId',
+      type: 'string',
+      title: 'Clerk ID',
     }),
   ],
   preview: {
