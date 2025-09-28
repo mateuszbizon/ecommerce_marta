@@ -5,6 +5,7 @@ import { Menu } from 'lucide-react'
 import { NAV_ITEMS } from '@/constants/navItems'
 import Link from 'next/link'
 import NavUser from './NavUser'
+import Basket from './Basket'
 
 function NavMobile() {
   return (
@@ -44,6 +45,7 @@ function NavMobile() {
                 ))}
             </ul>
             <div className='flex gap-5'>
+                <Basket />
                 <NavUser />
             </div>
             <Button asChild>

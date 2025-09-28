@@ -10,6 +10,7 @@ import useScroll from '@/lib/hooks/useScroll'
 import { NAV_ITEMS } from '@/constants/navItems'
 import NavMobile from './NavMobile'
 import NavUser from './NavUser'
+import Basket from './Basket'
 
 function Nav() {
     const { isScrolled } = useScroll({ scrollAmount: 50 })
@@ -35,6 +36,7 @@ function Nav() {
                     </NavigationMenu>
                 </div>
                 <div className='hidden lg:flex items-center gap-5'>
+                    <Basket />
                     <NavUser />
                     <Button asChild>
                         <Link href={"/sklep"}>
