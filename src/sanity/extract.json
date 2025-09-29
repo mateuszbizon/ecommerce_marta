@@ -844,19 +844,10 @@
         },
         "optional": true
       },
-      "descriptionShort": {
+      "description": {
         "type": "objectAttribute",
         "value": {
-          "type": "inline",
-          "name": "blockContent"
-        },
-        "optional": true
-      },
-      "descriptionLong": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "inline",
-          "name": "blockContent"
+          "type": "string"
         },
         "optional": true
       },

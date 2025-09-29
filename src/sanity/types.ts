@@ -143,8 +143,7 @@ export type Product = {
     crop?: SanityImageCrop;
     _type: "image";
   };
-  descriptionShort?: BlockContent;
-  descriptionLong?: BlockContent;
+  description?: string;
   price?: number;
   categories?: Array<{
     _ref: string;
@@ -300,8 +299,7 @@ export type AllProductsQueryResult = Array<{
     crop?: SanityImageCrop;
     _type: "image";
   };
-  descriptionShort?: BlockContent;
-  descriptionLong?: BlockContent;
+  description?: string;
   price?: number;
   categories?: Array<{
     _ref: string;

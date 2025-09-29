@@ -31,15 +31,9 @@ export const productType = defineType({
             }
         }),
         defineField({
-            name: "descriptionShort",
-            title: "Opis krótki",
-            type: "blockContent",
-            validation: (rule) => rule.required()
-        }),
-        defineField({
-            name: "descriptionLong",
-            title: "Opis długi",
-            type: "blockContent",
+            name: "description",
+            title: "Opis",
+            type: "text",
             validation: (rule) => rule.required()
         }),
         defineField({
