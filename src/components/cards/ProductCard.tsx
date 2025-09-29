@@ -8,6 +8,7 @@ import { Button } from '../ui/button'
 import useBasketStore from '@/store/basket'
 import { Check } from 'lucide-react'
 import Link from 'next/link'
+import { CURRENCY_VALUE } from '@/constants'
 
 type ProductCardProps = {
     product: Product
@@ -27,7 +28,7 @@ function ProductCard({ product }: ProductCardProps) {
         )}
         <div className='p-5 pb-0 flex flex-col text-center gap-5'>
             <p className='bigger-text'>{product.name}</p>
-            <p className='heading3'>{product.price?.toFixed(2)} zł</p>
+            <p className='heading3'>{product.price?.toFixed(2)} {CURRENCY_VALUE}</p>
             <Button variant={"destructive"} onClick={() => addItem(product)} disabled={isProductCountMoreZero}>
                 {isProductCountMoreZero ? "Dodano do koszyka" : "Wybieram"}
                 {isProductCountMoreZero && <Check className='size-5' />}
