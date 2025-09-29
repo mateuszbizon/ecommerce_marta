@@ -312,6 +312,42 @@ export type AllProductsQueryResult = Array<{
   isFeatured?: boolean;
 }>;
 
+// Source: ./src/sanity/lib/products/getFeaturedProducts.ts
+// Variable: featuredProductsQuery
+// Query: *[_type == "product" && isFeatured == true]
+export type FeaturedProductsQueryResult = Array<{
+  _id: string;
+  _type: "product";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name?: string;
+  slug?: Slug;
+  image?: {
+    asset?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+    };
+    media?: unknown;
+    hotspot?: SanityImageHotspot;
+    crop?: SanityImageCrop;
+    _type: "image";
+  };
+  description?: string;
+  price?: number;
+  categories?: Array<{
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    _key: string;
+    [internalGroqTypeReferenceTo]?: "category";
+  }>;
+  stock?: number;
+  isFeatured?: boolean;
+}>;
+
 // Source: ./src/sanity/lib/products/getProductBySlug.ts
 // Variable: productBySlugQuery
 // Query: *[_type == "product" && slug.current == $slug][0]
@@ -353,6 +389,7 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     "\n        *[_type == \"product\"]    \n    ": AllProductsQueryResult;
+    "\n        *[_type == \"product\" && isFeatured == true]\n    ": FeaturedProductsQueryResult;
     "\n        *[_type == \"product\" && slug.current == $slug][0]    \n    ": ProductBySlugQueryResult;
   }
 }
