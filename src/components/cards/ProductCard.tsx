@@ -25,7 +25,7 @@ function ProductCard({ product }: ProductCardProps) {
             </figure>
         )}
         <div className='p-5 pb-0 flex flex-col text-center gap-5'>
-            <h3 className='bigger-text'>{product.name}</h3>
+            <p className='bigger-text'>{product.name}</p>
             <p className='heading3'>{product.price?.toFixed(2)} zł</p>
             <Button variant={"destructive"} onClick={() => addItem(product)} disabled={isProductCountMoreZero}>
                 {isProductCountMoreZero ? "Dodano do koszyka" : "Wybieram"}
