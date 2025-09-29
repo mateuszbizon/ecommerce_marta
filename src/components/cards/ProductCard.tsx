@@ -7,6 +7,7 @@ import React from 'react'
 import { Button } from '../ui/button'
 import useBasketStore from '@/store/basket'
 import { Check } from 'lucide-react'
+import Link from 'next/link'
 
 type ProductCardProps = {
     product: Product
@@ -30,6 +31,11 @@ function ProductCard({ product }: ProductCardProps) {
             <Button variant={"destructive"} onClick={() => addItem(product)} disabled={isProductCountMoreZero}>
                 {isProductCountMoreZero ? "Dodano do koszyka" : "Wybieram"}
                 {isProductCountMoreZero && <Check className='size-5' />}
+            </Button>
+            <Button variant={"outline"} asChild>
+                <Link href={`/produkt/${product.slug?.current}`}>
+                    Przejdź do produktu
+                </Link>
             </Button>
         </div>
     </div>

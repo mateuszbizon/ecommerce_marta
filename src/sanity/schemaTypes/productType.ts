@@ -28,7 +28,8 @@ export const productType = defineType({
             type: "image",
             options: {
                 hotspot: true
-            }
+            },
+            validation: (rule) => rule.required()
         }),
         defineField({
             name: "description",
