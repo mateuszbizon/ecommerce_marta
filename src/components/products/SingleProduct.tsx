@@ -1,23 +1,18 @@
-"use client"
-
 import { Product } from '@/sanity/types'
 import React from 'react'
 import Container from '../ui/container'
 import { CURRENCY_VALUE } from '@/constants'
 import { urlFor } from '@/sanity/lib/image'
 import Image from 'next/image'
-import useBasketStore from '@/store/basket'
 import { Button } from '../ui/button'
 import Link from 'next/link'
-import { Minus, Plus } from 'lucide-react'
+import AddToBasket from '../basket/AddToBasket'
 
 type SingleProductProps = {
     product: Product
 }
 
 function SingleProduct({ product }: SingleProductProps) {
-    const { addItem, removeItem, getItemCount } = useBasketStore()
-    const productCount = getItemCount(product._id)
     const isOutOfStock = product.stock !== undefined && product.stock <= 0
 
   return (
@@ -47,15 +42,7 @@ function SingleProduct({ product }: SingleProductProps) {
                                     </Link>
                                 </Button>
                             </p>
-                            <div className='flex gap-5 items-center'>
-                                <Button size={"icon"} onClick={() => removeItem(product._id)} disabled={productCount === 0}>
-                                    <Minus />
-                                </Button>
-                                <span className='bigger-text'>{productCount}</span>
-                                <Button size={"icon"} onClick={() => addItem(product)}>
-                                    <Plus />
-                                </Button>
-                            </div>
+                            <AddToBasket product={product} />
                         </div>
                     )}
                 </div>
