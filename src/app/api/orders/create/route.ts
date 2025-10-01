@@ -1,3 +1,4 @@
+import { getUserByClerkId } from "@/sanity/lib/users/getUserByClerkId";
 import { writeClient } from "@/sanity/lib/writeClient";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
@@ -6,7 +7,17 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
 export async function POST(req: Request) {
   try {
-    const { clientSecret, shipping, total, currency, amountDiscount, products } = await req.json();
+    const { clientSecret, shipping, total, currency, amountDiscount, products, clerkId } = await req.json();
+
+    let userRef = null;
+
+    if (clerkId) {
+        const user = await getUserByClerkId(clerkId)
+
+        if (user?._id) {
+            userRef = { _type: "reference", _ref: user._id };
+        }
+    }
 
     const orderProducts = (products || []).map((item: { productId: string, quantity: number }) => ({
       product: { _type: "reference", _ref: item.productId },
@@ -32,7 +43,8 @@ export async function POST(req: Request) {
         orderDate: new Date().toISOString(),
         products: orderProducts,
         orderNumber: crypto.randomUUID(),
-        stripePaymentIntentId: piId
+        stripePaymentIntentId: piId,
+        user: userRef,
     });
 
 

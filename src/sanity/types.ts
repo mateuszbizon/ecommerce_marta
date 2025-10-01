@@ -383,6 +383,13 @@ export type ProductBySlugQueryResult = {
   isFeatured?: boolean;
 } | null;
 
+// Source: ./src/sanity/lib/users/getUserByClerkId.ts
+// Variable: userQuery
+// Query: *[_type == "user" && clerkId == $clerkId][0]{_id}
+export type UserQueryResult = {
+  _id: string;
+} | null;
+
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
@@ -390,5 +397,6 @@ declare module "@sanity/client" {
     "\n        *[_type == \"product\"]    \n    ": AllProductsQueryResult;
     "\n        *[_type == \"product\" && isFeatured == true]\n    ": FeaturedProductsQueryResult;
     "\n        *[_type == \"product\" && slug.current == $slug][0]    \n    ": ProductBySlugQueryResult;
+    "\n        *[_type == \"user\" && clerkId == $clerkId][0]{_id}    \n    ": UserQueryResult;
   }
 }

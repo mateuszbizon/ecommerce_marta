@@ -11,6 +11,7 @@ import { Button } from '../ui/button'
 import { Card } from '../ui/card'
 import useBasketStore from '@/store/basket'
 import { CURRENCY } from '@/constants'
+import { useUser } from '@clerk/nextjs'
 
 type CheckoutFormProps = {
     clientSecret: string;
@@ -19,6 +20,8 @@ type CheckoutFormProps = {
 function CheckoutForm({ clientSecret }: CheckoutFormProps) {
     const stripe = useStripe()
     const elements = useElements()
+    const { user } = useUser()
+    console.log(user?.id)
     const { getGroupedItems, getTotalPrice } = useBasketStore()
     const [stripeError, setStripeError] = useState("")
     const form = useForm<CheckoutSchema>({
@@ -53,7 +56,8 @@ function CheckoutForm({ clientSecret }: CheckoutFormProps) {
                 products: getGroupedItems().map(item => ({
                     productId: item.product._id,
                     quantity: item.quantity
-                }))
+                })),
+                clerkId: user?.id || null,
             }),
         });
 
