@@ -275,6 +275,13 @@ export type SanityAssetSourceData = {
 
 export type AllSanitySchemaTypes = BlockContent | Sale | Category | Order | User | Product | SanityImagePaletteSwatch | SanityImagePalette | SanityImageDimensions | SanityImageHotspot | SanityImageCrop | SanityFileAsset | SanityImageAsset | SanityImageMetadata | Geopoint | Slug | SanityAssetSourceData;
 export declare const internalGroqTypeReferenceTo: unique symbol;
+// Source: ./src/sanity/lib/orders/getOrderByPaymentIntent.ts
+// Variable: orderQuery
+// Query: *[_type == "order" && stripePaymentIntentId == $piId][0]{_id}
+export type OrderQueryResult = {
+  _id: string;
+} | null;
+
 // Source: ./src/sanity/lib/products/getAllProducts.ts
 // Variable: allProductsQuery
 // Query: *[_type == "product"]
@@ -394,6 +401,7 @@ export type UserQueryResult = {
 import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
+    "\n        *[_type == \"order\" && stripePaymentIntentId == $piId][0]{_id}    \n    ": OrderQueryResult;
     "\n        *[_type == \"product\"]    \n    ": AllProductsQueryResult;
     "\n        *[_type == \"product\" && isFeatured == true]\n    ": FeaturedProductsQueryResult;
     "\n        *[_type == \"product\" && slug.current == $slug][0]    \n    ": ProductBySlugQueryResult;
