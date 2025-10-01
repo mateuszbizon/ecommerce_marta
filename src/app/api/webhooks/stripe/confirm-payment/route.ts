@@ -1,3 +1,5 @@
+import { getOrderByPaymentIntent } from "@/sanity/lib/orders/getOrderByPaymentIntent"
+import { writeClient } from "@/sanity/lib/writeClient"
 import { NextResponse } from "next/server"
 import Stripe from "stripe"
 
@@ -17,29 +19,22 @@ export async function POST(req: Request) {
     )
 
     if (event.type === "payment_intent.succeeded") {
-      const paymentIntent = event.data.object as Stripe.PaymentIntent
-      console.log(paymentIntent)
+        const paymentIntent = event.data.object as Stripe.PaymentIntent
+        console.log(paymentIntent)
 
-      // przykładowe dane
-      const shipping = paymentIntent.shipping
-
-    //   await writeClient.create({
-    //     _type: "order",
-    //     orderNumber: crypto.randomUUID(),
-    //     stripePaymentIntentId: paymentIntent.id,
-    //     totalPrice: paymentIntent.amount / 100,
-    //     currency: paymentIntent.currency,
-    //     status: "paid",
-    //     customerName: shipping?.name,
-    //     customerEmail: paymentIntent.receipt_email,
-    //     customerCountry: shipping?.address?.country,
-    //     customerStreet: shipping?.address?.line1,
-    //     customerPostalCode: shipping?.address?.postal_code,
-    //     customerCity: shipping?.address?.city,
-    //     customerPhoneNumber: shipping?.phone,
-    //     orderDate: new Date().toISOString(),
-    //     products: [], // możesz podać z koszyka
-    //   })
+        if (!paymentIntent.metadata.orderId) {
+            const order = await getOrderByPaymentIntent(paymentIntent.id)
+            
+            if (order?._id) {
+                await writeClient.patch(order._id)
+                    .set({ status: "paid" })
+                    .commit();
+            }
+        } else {
+            await writeClient.patch(paymentIntent.metadata.orderId)
+                .set({ status: "paid" })
+                .commit();
+        }
     }
 
     return NextResponse.json({ received: "Webhook received" })

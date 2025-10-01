@@ -4,13 +4,18 @@ import CheckoutForm from "@/components/forms/CheckoutForm"
 import StripeProvider from "@/components/providers/StripeProvider"
 import Container from "@/components/ui/container"
 import useBasketStore from "@/store/basket"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 export default function CheckoutPage() {
   const [clientSecret, setClientSecret] = useState("")
   const { getTotalPrice } = useBasketStore()
+  const intentCreated = useRef(false)
 
   useEffect(() => {
+    if (intentCreated.current) return
+    
+    intentCreated.current = true
+
     async function createIntent() {
         const res = await fetch("/api/webhooks/stripe/create-payment-intent", {
             method: "POST",
