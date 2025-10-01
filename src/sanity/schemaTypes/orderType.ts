@@ -14,15 +14,9 @@ export const orderType = defineType({
             validation: (rule) => rule.required()
         }),
         defineField({
-            name: "stripeCheckoutSession",
-            title: "Stripe Checkout Session",
-            type: "string"
-        }),
-        defineField({
             name: "stripeCustomerId",
             title: "Stripe Customer Id",
             type: "string",
-            validation: (rule) => rule.required()
         }),
         defineField({
             name: "customerName",
@@ -166,7 +160,7 @@ export const orderType = defineType({
             amount: "totalPrice",
             currency: "currency",
             orderId: "orderNumber",
-            email: "email"
+            email: "customerEmail"
         },
         prepare(select) {
             const orderIdSnippet = `${select.orderId.slice(0, 5)}...${select.orderId.slice(-5)}`

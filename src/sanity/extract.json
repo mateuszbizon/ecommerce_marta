@@ -441,13 +441,6 @@
         },
         "optional": true
       },
-      "stripeCheckoutSession": {
-        "type": "objectAttribute",
-        "value": {
-          "type": "string"
-        },
-        "optional": true
-      },
       "stripeCustomerId": {
         "type": "objectAttribute",
         "value": {

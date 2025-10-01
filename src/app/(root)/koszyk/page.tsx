@@ -122,6 +122,11 @@ function BasketPage() {
                                 </span>
                             </p>
                         </div>
+                        <Button className='mt-4 w-full' asChild>
+                            <Link href={"/checkout"}>
+                                Przejdź do płatności
+                            </Link>
+                        </Button>
 
                         {/* {isSignedIn ? (
                             <button 

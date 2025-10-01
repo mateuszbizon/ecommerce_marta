@@ -78,7 +78,6 @@ export type Order = {
   _updatedAt: string;
   _rev: string;
   orderNumber?: string;
-  stripeCheckoutSession?: string;
   stripeCustomerId?: string;
   customerName?: string;
   customerEmail?: string;
