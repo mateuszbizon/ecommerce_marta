@@ -126,9 +126,9 @@ function CheckoutForm({ clientSecret }: CheckoutFormProps) {
                         name="country"
                         render={({ field }) => (
                             <FormItem>
-                                <FormLabel>Państwo</FormLabel>
+                                <FormLabel>Kraj</FormLabel>
                                 <FormControl>
-                                    <Input placeholder="Państwo" {...field} />
+                                    <Input placeholder="Kraj" {...field} />
                                 </FormControl>
                                 <FormMessage />
                             </FormItem>
