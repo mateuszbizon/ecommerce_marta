@@ -7,6 +7,11 @@ export type BasketItem = {
     quantity: number
 }
 
+export type Coupon = {
+    code: string
+    amountDiscount: number
+} | null
+
 type BasketState = {
     items: BasketItem[]
     addItem: (product: Product) => void
@@ -16,6 +21,8 @@ type BasketState = {
     getItemCount: (productId: string) => number
     getGroupedItems: () => BasketItem[]
     getAllItemsQuantity: () => number
+    appliedCoupon: Coupon
+    applyCoupon: (coupon: Coupon) => void
 }
 
 const useBasketStore = create<BasketState>()(
@@ -52,9 +59,13 @@ const useBasketStore = create<BasketState>()(
                 items: []
             })),
             getTotalPrice: () => {
-                return get().items.reduce((acc, item) => {
+                const baseTotal =  get().items.reduce((acc, item) => {
                     return acc + ((item.product.price ?? 0) * item.quantity)
                 }, 0)
+
+                const coupon = get().appliedCoupon
+
+                return coupon ? baseTotal - (baseTotal * (coupon.amountDiscount / 100)) : baseTotal
             },
             getItemCount: (productId) => {
                 const item = get().items.find(item => item.product._id === productId)
@@ -66,7 +77,11 @@ const useBasketStore = create<BasketState>()(
             },
             getAllItemsQuantity: () => {
                 return get().items.reduce((total, item) => total + item.quantity, 0)
-            }
+            },
+            appliedCoupon: null,
+            applyCoupon: (coupon) => set(() => ({
+                appliedCoupon: coupon
+            })),
         }),
         {
             name: "basket-store"

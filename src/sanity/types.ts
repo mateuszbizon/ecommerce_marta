@@ -390,6 +390,24 @@ export type ProductBySlugQueryResult = {
   isFeatured?: boolean;
 } | null;
 
+// Source: ./src/sanity/lib/sales/getValidCoupon.ts
+// Variable: couponQuery
+// Query: *[_type == "sale" && couponCode == $code][0]
+export type CouponQueryResult = {
+  _id: string;
+  _type: "sale";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  name?: string;
+  description?: string;
+  discountAmount?: number;
+  couponCode?: string;
+  validFrom?: string;
+  validUntil?: string;
+  isActive?: boolean;
+} | null;
+
 // Source: ./src/sanity/lib/users/getUserByClerkId.ts
 // Variable: userQuery
 // Query: *[_type == "user" && clerkId == $clerkId][0]{_id}
@@ -405,6 +423,7 @@ declare module "@sanity/client" {
     "\n        *[_type == \"product\"]    \n    ": AllProductsQueryResult;
     "\n        *[_type == \"product\" && isFeatured == true]\n    ": FeaturedProductsQueryResult;
     "\n        *[_type == \"product\" && slug.current == $slug][0]    \n    ": ProductBySlugQueryResult;
+    "\n        *[_type == \"sale\" && couponCode == $code][0]    \n    ": CouponQueryResult;
     "\n        *[_type == \"user\" && clerkId == $clerkId][0]{_id}    \n    ": UserQueryResult;
   }
 }

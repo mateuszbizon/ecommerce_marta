@@ -10,7 +10,7 @@ import { useStripe, useElements, PaymentElement } from "@stripe/react-stripe-js"
 import { Button } from '../ui/button'
 import { Card } from '../ui/card'
 import useBasketStore from '@/store/basket'
-import { CURRENCY } from '@/constants'
+import { CURRENCY, CURRENCY_VALUE } from '@/constants'
 import { useUser } from '@clerk/nextjs'
 
 type CheckoutFormProps = {
@@ -21,7 +21,6 @@ function CheckoutForm({ clientSecret }: CheckoutFormProps) {
     const stripe = useStripe()
     const elements = useElements()
     const { user } = useUser()
-    console.log(user?.id)
     const { getGroupedItems, getTotalPrice } = useBasketStore()
     const [stripeError, setStripeError] = useState("")
     const form = useForm<CheckoutSchema>({
@@ -82,7 +81,7 @@ function CheckoutForm({ clientSecret }: CheckoutFormProps) {
     <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col lg:flex-row gap-x-5 gap-y-10">
             <Card className='grow'>
-                <p className='bigger-text'>Wysyłka</p>
+                <p className='bigger-text'>Dane do wysyłki</p>
                 <div className='space-y-8'>
                     <div className='grid lg:grid-cols-2 gap-x-5 gap-y-8'>
                         <FormField
@@ -196,6 +195,12 @@ function CheckoutForm({ clientSecret }: CheckoutFormProps) {
             </Card>
             <Card className='w-full lg:w-120 lg:h-fit lg:sticky lg:top-nav-height'>
                 <p className='bigger-text'>Płatność</p>
+                <p className='flex justify-between bigger-text font-bold'>
+                    <span>Suma:</span>
+                    <span>
+                        {getTotalPrice().toFixed(2)} {CURRENCY_VALUE}
+                    </span>
+                </p>
                 <PaymentElement />
                 {stripeError.length > 0 && (
                     <p className='text-destructive'>{stripeError}</p>
