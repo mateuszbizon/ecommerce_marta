@@ -22,6 +22,12 @@ export const userType = defineType({
       type: 'string',
       title: 'Clerk ID',
     }),
+    defineField({
+      name: 'isAdmin',
+      type: 'boolean',
+      title: 'Czy jest administratorem',
+      initialValue: false
+    }),
   ],
   preview: {
     select: {
