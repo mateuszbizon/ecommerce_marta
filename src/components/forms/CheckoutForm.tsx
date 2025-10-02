@@ -12,6 +12,8 @@ import { Card } from '../ui/card'
 import useBasketStore from '@/store/basket'
 import { CURRENCY, CURRENCY_VALUE } from '@/constants'
 import { useUser } from '@clerk/nextjs'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
+import { COUNTRIES } from '@/constants/countries'
 
 type CheckoutFormProps = {
     clientSecret: string;
@@ -130,9 +132,20 @@ function CheckoutForm({ clientSecret }: CheckoutFormProps) {
                         render={({ field }) => (
                             <FormItem>
                                 <FormLabel>Kraj</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Kraj" {...field} />
-                                </FormControl>
+                                <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                    <FormControl>
+                                        <SelectTrigger className='w-full'>
+                                            <SelectValue placeholder="Wybierz kraj" />
+                                        </SelectTrigger>
+                                    </FormControl>
+                                    <SelectContent>
+                                        {COUNTRIES.map(item => (
+                                            <SelectItem key={item.value} value={item.value}>
+                                                {item.label}
+                                            </SelectItem>
+                                        ))}
+                                    </SelectContent>
+                                </Select>
                                 <FormMessage />
                             </FormItem>
                         )}
