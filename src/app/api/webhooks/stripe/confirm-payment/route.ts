@@ -1,3 +1,4 @@
+import { sendOrderConfirmation } from "@/lib/emails/orderConfirmEmail"
 import { getOrderByPaymentIntent } from "@/sanity/lib/orders/getOrderByPaymentIntent"
 import { writeClient } from "@/sanity/lib/writeClient"
 import { NextResponse } from "next/server"
@@ -22,19 +23,28 @@ export async function POST(req: Request) {
         const paymentIntent = event.data.object as Stripe.PaymentIntent
         console.log(paymentIntent)
 
+        let updatedOrder
+
         if (!paymentIntent.metadata.orderId) {
             const order = await getOrderByPaymentIntent(paymentIntent.id)
             
             if (order?._id) {
-                await writeClient.patch(order._id)
+                updatedOrder = await writeClient.patch(order._id)
                     .set({ status: "paid" })
                     .commit();
             }
         } else {
-            await writeClient.patch(paymentIntent.metadata.orderId)
+            updatedOrder = await writeClient.patch(paymentIntent.metadata.orderId)
                 .set({ status: "paid" })
                 .commit();
         }
+
+        await sendOrderConfirmation({
+            orderNumber: updatedOrder?.orderNumber,
+            customerEmail: updatedOrder?.customerEmail,
+            customerName: updatedOrder?.customerName,
+            total: updatedOrder?.totalPrice
+        })
     }
 
     return NextResponse.json({ received: "Webhook received" })
