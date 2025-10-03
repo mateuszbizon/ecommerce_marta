@@ -120,6 +120,7 @@ export type User = {
   name?: string;
   email?: string;
   clerkId?: string;
+  isAdmin?: boolean;
 };
 
 export type Product = {
@@ -282,6 +283,49 @@ export type OrderQueryResult = {
   _id: string;
 } | null;
 
+// Source: ./src/sanity/lib/orders/getOrdersBySearch.ts
+// Variable: query
+// Query: *[_type == "order" && (                !defined($term) ||                orderNumber match $term ||                customerName match $term ||                customerEmail match $term ||                customerStreet match $term ||                customerPostalCode match $term ||                customerCity match $term ||                customerPhoneNumber match $term            )] | order(orderDate desc)
+export type QueryResult = Array<{
+  _id: string;
+  _type: "order";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  orderNumber?: string;
+  stripeCustomerId?: string;
+  customerName?: string;
+  customerEmail?: string;
+  customerCountry?: string;
+  customerStreet?: string;
+  customerPostalCode?: string;
+  customerCity?: string;
+  customerPhoneNumber?: string;
+  customerCompany?: string;
+  stripePaymentIntentId?: string;
+  products?: Array<{
+    product?: {
+      _ref: string;
+      _type: "reference";
+      _weak?: boolean;
+      [internalGroqTypeReferenceTo]?: "product";
+    };
+    quantity?: number;
+    _key: string;
+  }>;
+  totalPrice?: number;
+  currency?: string;
+  amountDiscount?: number;
+  status?: "cancelled" | "delivered" | "paid" | "pending" | "shipped";
+  orderDate?: string;
+  user?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "user";
+  };
+}>;
+
 // Source: ./src/sanity/lib/products/getAllProducts.ts
 // Variable: allProductsQuery
 // Query: *[_type == "product"]
@@ -420,6 +464,7 @@ import "@sanity/client";
 declare module "@sanity/client" {
   interface SanityQueries {
     "\n        *[_type == \"order\" && stripePaymentIntentId == $piId][0]{_id}    \n    ": OrderQueryResult;
+    "\n            *[_type == \"order\" && (\n                !defined($term) ||\n                orderNumber match $term ||\n                customerName match $term ||\n                customerEmail match $term ||\n                customerStreet match $term ||\n                customerPostalCode match $term ||\n                customerCity match $term ||\n                customerPhoneNumber match $term\n            )] | order(orderDate desc)    \n        ": QueryResult;
     "\n        *[_type == \"product\"]    \n    ": AllProductsQueryResult;
     "\n        *[_type == \"product\" && isFeatured == true]\n    ": FeaturedProductsQueryResult;
     "\n        *[_type == \"product\" && slug.current == $slug][0]    \n    ": ProductBySlugQueryResult;

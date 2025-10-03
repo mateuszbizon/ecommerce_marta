@@ -715,6 +715,13 @@
           "type": "string"
         },
         "optional": true
+      },
+      "isAdmin": {
+        "type": "objectAttribute",
+        "value": {
+          "type": "boolean"
+        },
+        "optional": true
       }
     }
   },
