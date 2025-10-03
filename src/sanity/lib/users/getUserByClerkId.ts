@@ -3,7 +3,7 @@ import { client } from "../client";
 
 export async function getUserByClerkId(clerkId: string) {
     const userQuery = defineQuery(`
-        *[_type == "user" && clerkId == $clerkId][0]{_id}    
+        *[_type == "user" && clerkId == $clerkId][0]{_id, isAdmin}    
     `)
 
     try {

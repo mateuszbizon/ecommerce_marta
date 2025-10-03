@@ -454,9 +454,10 @@ export type CouponQueryResult = {
 
 // Source: ./src/sanity/lib/users/getUserByClerkId.ts
 // Variable: userQuery
-// Query: *[_type == "user" && clerkId == $clerkId][0]{_id}
+// Query: *[_type == "user" && clerkId == $clerkId][0]{_id, isAdmin}
 export type UserQueryResult = {
   _id: string;
+  isAdmin: boolean | null;
 } | null;
 
 // Query TypeMap
@@ -469,6 +470,6 @@ declare module "@sanity/client" {
     "\n        *[_type == \"product\" && isFeatured == true]\n    ": FeaturedProductsQueryResult;
     "\n        *[_type == \"product\" && slug.current == $slug][0]    \n    ": ProductBySlugQueryResult;
     "\n        *[_type == \"sale\" && couponCode == $code][0]    \n    ": CouponQueryResult;
-    "\n        *[_type == \"user\" && clerkId == $clerkId][0]{_id}    \n    ": UserQueryResult;
+    "\n        *[_type == \"user\" && clerkId == $clerkId][0]{_id, isAdmin}    \n    ": UserQueryResult;
   }
 }
