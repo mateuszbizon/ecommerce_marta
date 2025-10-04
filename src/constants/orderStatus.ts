@@ -5,3 +5,9 @@ export const ORDER_STATUS_MAP: Record<string, { title: string; bg: string }> = {
     delivered:  { title: "Dostarczone",bg: "bg-purple-200 text-purple-900" },
     cancelled:  { title: "Anulowane",  bg: "bg-red-200 text-red-900" },
 };
+
+export const ORDER_STATUS_ADMIN_MAP: Record<string, { title: string; bg: string }> = {
+    shipped:    { title: "Wysłane",    bg: "bg-blue-200 text-blue-900" },
+    delivered:  { title: "Dostarczone",bg: "bg-purple-200 text-purple-900" },
+    cancelled:  { title: "Anulowane",  bg: "bg-red-200 text-red-900" },
+};
