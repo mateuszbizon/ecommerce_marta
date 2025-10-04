@@ -23,7 +23,7 @@ function CheckoutForm({ clientSecret }: CheckoutFormProps) {
     const stripe = useStripe()
     const elements = useElements()
     const { user } = useUser()
-    const { getGroupedItems, getTotalPrice } = useBasketStore()
+    const { getGroupedItems, getTotalPrice, appliedCoupon } = useBasketStore()
     const [stripeError, setStripeError] = useState("")
     const form = useForm<CheckoutSchema>({
         resolver: zodResolver(checkoutSchema),
@@ -53,7 +53,7 @@ function CheckoutForm({ clientSecret }: CheckoutFormProps) {
                 shipping: data,
                 total: getTotalPrice(),
                 currency: CURRENCY,
-                amountDiscount: 0,
+                amountDiscount: appliedCoupon ? appliedCoupon.amountDiscount : 0,
                 products: getGroupedItems().map(item => ({
                     productId: item.product._id,
                     quantity: item.quantity
