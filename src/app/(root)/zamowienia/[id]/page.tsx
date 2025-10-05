@@ -25,7 +25,7 @@ async function SingleOrderPage({ params }: Props) {
             <h1 className='heading2 heading-margin-bottom'>Szczegóły zamówienia</h1>
             <Card className='mb-5 relative overflow-hidden'>
                 <p className='bigger-text'>Zmień status zamówienia</p>
-                <OrderForm orderStatus={order.status!} />
+                <OrderForm orderStatus={order.status!} orderId={order._id} />
                 {order.status === "pending" && (
                     <div className='absolute inset-0 bg-black/70 flex justify-center items-center text-center text-white little-bigger-text'>
                         <p>Nie można zmienić statusu zamówienia jeśli status jest na oczekujące</p>
