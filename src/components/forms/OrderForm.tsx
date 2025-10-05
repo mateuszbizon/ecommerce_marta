@@ -5,6 +5,7 @@ import { getOrderStatusInfo } from '@/lib/utils'
 import React, { FormEvent, useState } from 'react'
 import { Button } from '../ui/button'
 import { updateOrderStatus } from '@/lib/actions/orders/updateOrderStatus'
+import { toast } from 'sonner'
 
 type OrderFormProps = {
     orderStatus: string
@@ -33,6 +34,11 @@ function OrderForm({ orderStatus, orderId }: OrderFormProps) {
             await updateOrderStatus({
                 orderId,
                 orderStatus: selectedStatus.status
+            })
+
+            toast("Zaktualizowano zamówienie", {
+                description: `Zmieniono status na ${selectedStatus.title}`,
+                descriptionClassName: "sonner-desc"
             })
         } catch (error) {
             
