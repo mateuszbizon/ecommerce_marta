@@ -30,12 +30,12 @@ export async function POST(req: Request) {
             
             if (order?._id) {
                 updatedOrder = await writeClient.patch(order._id)
-                    .set({ status: "paid" })
+                    .set({ status: "paid", currency: paymentIntent.currency })
                     .commit();
             }
         } else {
             updatedOrder = await writeClient.patch(paymentIntent.metadata.orderId)
-                .set({ status: "paid" })
+                .set({ status: "paid", currency: paymentIntent.currency })
                 .commit();
         }
 
