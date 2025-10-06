@@ -3,6 +3,7 @@ import { getUserByClerkId } from './sanity/lib/users/getUserByClerkId';
 import { NextResponse } from 'next/server';
 
 const protectedAdminRoutes = createRouteMatcher(["/zamowienia(.*)"])
+const protectedRoutes = createRouteMatcher(["/twoje-zamowienia"])
 
 export default clerkMiddleware(async (auth, req) => {
     if (protectedAdminRoutes(req)) {
@@ -19,6 +20,8 @@ export default clerkMiddleware(async (auth, req) => {
             return NextResponse.redirect(new URL("/", req.url));
         }
     }
+
+    if (protectedRoutes(req)) await auth.protect()
 })
 
 export const config = {
