@@ -12,6 +12,7 @@ const buttonVariants = cva(
         default: "bg-primary text-primary-foreground hover:bg-primary-hover hover:text-white",
         destructive:
           "bg-destructive text-black hover:bg-destructive-hover hover:text-white focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60",
+        success: "bg-success text-primary-foreground hover:bg-success-dark hover:text-white",
         outline:
           "border border-primary bg-transparent hover:bg-primary hover:text-primary-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50",
         link: "text-primary hover:text-primary-hover",
