@@ -379,6 +379,59 @@ export type QueryResult = Array<{
   };
 }>;
 
+// Source: ./src/sanity/lib/orders/getUserOrdersByClerkId.ts
+// Variable: userOrdersQuery
+// Query: *[_type == "order" && user->clerkId == $clerkId] | order(orderDate desc){            ...,            products[]{                quantity,                product->{                    _id,                    name,                    price,                    image                }            }        }
+export type UserOrdersQueryResult = Array<{
+  _id: string;
+  _type: "order";
+  _createdAt: string;
+  _updatedAt: string;
+  _rev: string;
+  orderNumber?: string;
+  stripeCustomerId?: string;
+  customerName?: string;
+  customerEmail?: string;
+  customerCountry?: string;
+  customerStreet?: string;
+  customerPostalCode?: string;
+  customerCity?: string;
+  customerPhoneNumber?: string;
+  customerCompany?: string;
+  stripePaymentIntentId?: string;
+  products: Array<{
+    quantity: number | null;
+    product: {
+      _id: string;
+      name: string | null;
+      price: number | null;
+      image: {
+        asset?: {
+          _ref: string;
+          _type: "reference";
+          _weak?: boolean;
+          [internalGroqTypeReferenceTo]?: "sanity.imageAsset";
+        };
+        media?: unknown;
+        hotspot?: SanityImageHotspot;
+        crop?: SanityImageCrop;
+        _type: "image";
+      } | null;
+    } | null;
+  }> | null;
+  totalPrice?: number;
+  currency?: string;
+  amountDiscount?: number;
+  status?: "cancelled" | "delivered" | "paid" | "pending" | "shipped";
+  orderDate?: string;
+  user?: {
+    _ref: string;
+    _type: "reference";
+    _weak?: boolean;
+    [internalGroqTypeReferenceTo]?: "user";
+  };
+}>;
+
 // Source: ./src/sanity/lib/products/getAllProducts.ts
 // Variable: allProductsQuery
 // Query: *[_type == "product"]
@@ -520,6 +573,7 @@ declare module "@sanity/client" {
     "\n        *[_type == \"order\" && _id == $orderId][0]{\n            ...,\n            products[]{\n                quantity,\n                product->{\n                    _id,\n                    name,\n                    price,\n                    image\n                }\n            }\n        }\n    ": SingleOrderQueryResult;
     "\n        *[_type == \"order\" && stripePaymentIntentId == $piId][0]{_id}    \n    ": OrderQueryResult;
     "\n            *[_type == \"order\" && (\n                !defined($term) ||\n                orderNumber match $term ||\n                customerName match $term ||\n                customerEmail match $term ||\n                customerStreet match $term ||\n                customerPostalCode match $term ||\n                customerCity match $term ||\n                customerPhoneNumber match $term\n            )] | order(orderDate desc)    \n        ": QueryResult;
+    "\n        *[_type == \"order\" && user->clerkId == $clerkId] | order(orderDate desc){\n            ...,\n            products[]{\n                quantity,\n                product->{\n                    _id,\n                    name,\n                    price,\n                    image\n                }\n            }\n        }    \n    ": UserOrdersQueryResult;
     "\n        *[_type == \"product\"]    \n    ": AllProductsQueryResult;
     "\n        *[_type == \"product\" && isFeatured == true]\n    ": FeaturedProductsQueryResult;
     "\n        *[_type == \"product\" && slug.current == $slug][0]    \n    ": ProductBySlugQueryResult;

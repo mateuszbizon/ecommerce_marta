@@ -3,6 +3,7 @@ import React from 'react'
 import { Card } from '../ui/card'
 import Link from 'next/link'
 import { getOrderStatusInfo } from '@/lib/utils'
+import { formatCurrency } from '@/lib/formatCurrency'
 
 type OrderCardProps = {
     order: Order
@@ -16,7 +17,7 @@ function OrderCard({ order }: OrderCardProps) {
         <Card className='hover:bg-card/50'>
             <p className='little-bigger-text'>Numer zamówienia: <span className='font-medium'>{order.orderNumber}</span></p>
             <div className='flex gap-5 flex-wrap'>
-                <p>Cena: <span className='font-medium'>{order.currency} {order.totalPrice}</span></p>
+                <p>Cena: <span className='font-medium'>{formatCurrency(order.totalPrice || 0, order.currency)}</span></p>
                 <p>
                     Status: {" "}
                     <span className={`px-3 py-1 rounded ${statusInfo.bg} font-semibold`}>
