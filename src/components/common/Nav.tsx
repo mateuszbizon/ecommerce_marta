@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import Container from '../ui/container'
 import NavCard from '../cards/NavCard'
 import { NavigationMenu, NavigationMenuItem, NavigationMenuList } from '../ui/navigation-menu'
@@ -14,11 +14,14 @@ import Basket from './Basket'
 import { useAuth } from '@clerk/nextjs'
 import { getUserByClerkId } from '@/sanity/lib/users/getUserByClerkId'
 import { UserQueryResult } from '@/sanity/types'
+import { useMediaQuery } from 'react-responsive'
 
 function Nav() {
     const { userId } = useAuth()
     const [user, setUser] = useState<UserQueryResult>(null)
     const { isScrolled } = useScroll({ scrollAmount: 50 })
+    const isDesktop = useMediaQuery({ minWidth: 1024 })
+    const userFetched = useRef(false)
 
     useEffect(() => {
         const handleGetUser = async () => {
@@ -26,10 +29,13 @@ function Nav() {
 
             const sanityUser = await getUserByClerkId(userId)
             setUser(sanityUser)
+            userFetched.current = true
         }
 
+        if (!isDesktop || userFetched.current) return
+   
         handleGetUser()
-    }, [userId])
+    }, [userId, isDesktop])
 
   return (
     <nav className={`h-nav-height fixed top-0 w-full z-40 ${isScrolled ? "bg-background-light" : "bg-transparent"} transition`}>
