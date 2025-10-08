@@ -127,3 +127,9 @@
         @apply text-base
     }
 }
+
+@layer utilities {
+    .big-section-padding {
+        @apply py-section-padding lg:py-[calc(theme(padding.section-padding)*2)]
+    }
+}

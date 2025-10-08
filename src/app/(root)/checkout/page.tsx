@@ -1,6 +1,7 @@
 "use client"
 
 import CheckoutForm from "@/components/forms/CheckoutForm"
+import LoadingMain from "@/components/messages/LoadingMain"
 import StripeProvider from "@/components/providers/StripeProvider"
 import Container from "@/components/ui/container"
 import useBasketStore from "@/store/basket"
@@ -43,7 +44,7 @@ export default function CheckoutPage() {
                     <CheckoutForm clientSecret={clientSecret} />
                 </StripeProvider>
             ) : (
-                <p>Ładowanie...</p>
+                <LoadingMain title="Ładowanie strony zamówienia" />
             )}
         </Container>
     </section>

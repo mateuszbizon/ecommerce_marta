@@ -6,6 +6,7 @@ import { Card } from '@/components/ui/card'
 import Container from '@/components/ui/container'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { Spinner } from '@/components/ui/spinner'
 import { CURRENCY_VALUE } from '@/constants'
 import { urlFor } from '@/sanity/lib/image'
 import { getValidCoupon } from '@/sanity/lib/sales/getValidCoupon'
@@ -110,8 +111,12 @@ function BasketPage() {
                                     <Label htmlFor='coupon'>Kupon</Label>
                                     <Input id='coupon' value={couponCode} onChange={(e) => setCouponCode(e.target.value)} placeholder='Kupon' disabled={isLoadingCoupon || appliedCoupon !== null} />
                                 </div>
-                                <Button size={"sm"} className='w-fit text-base' onClick={() => handleGetValidCoupon(couponCode)} disabled={isLoadingCoupon || appliedCoupon !== null}>
-                                    Zastosuj
+                                <Button size={"sm"} className='w-fit text-base' onClick={() => handleGetValidCoupon(couponCode)} disabled={isLoadingCoupon || appliedCoupon !== null || couponCode === ""}>
+                                    {isLoadingCoupon ? (
+                                        <>
+                                            Szukanie <Spinner />
+                                        </>
+                                    ) : "Zastosuj"}
                                 </Button>
                                 {appliedCoupon && (
                                     <Button variant={"link"} size={"link"} className='text-destructive-hover hover:text-destructive' onClick={() => applyCoupon(null)}>

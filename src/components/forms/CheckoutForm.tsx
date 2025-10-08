@@ -14,6 +14,7 @@ import { CURRENCY, CURRENCY_VALUE } from '@/constants'
 import { useUser } from '@clerk/nextjs'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import { COUNTRIES } from '@/constants/countries'
+import { Spinner } from '../ui/spinner'
 
 type CheckoutFormProps = {
     clientSecret: string;
@@ -219,7 +220,11 @@ function CheckoutForm({ clientSecret }: CheckoutFormProps) {
                     <p className='text-destructive'>{stripeError}</p>
                 )}
                 <Button className='w-full' disabled={form.formState.isSubmitting}>
-                    {form.formState.isSubmitting ? "Przetwarzanie" : "Zapłać"}
+                    {form.formState.isSubmitting ? (
+                        <>
+                            Przetwarzanie <Spinner />
+                        </>
+                    ) : "Zapłać"}
                 </Button>
             </Card>
         </form>

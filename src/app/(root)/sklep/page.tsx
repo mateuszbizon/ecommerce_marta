@@ -1,6 +1,7 @@
+import LoadingMain from '@/components/messages/LoadingMain'
 import AllProducts from '@/components/products/AllProducts'
 import Container from '@/components/ui/container'
-import React from 'react'
+import React, { Suspense } from 'react'
 
 function ShopPage() {
   return (
@@ -8,7 +9,9 @@ function ShopPage() {
         <section className='py-section-padding'>
             <Container>
                 <h1 className='heading2 text-center heading-margin-bottom'>Produkty</h1>
-                <AllProducts />
+                <Suspense fallback={<LoadingMain title='Ładowanie produktów' />}>
+                    <AllProducts />
+                </Suspense>
             </Container>
         </section>
     </>

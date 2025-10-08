@@ -6,6 +6,7 @@ import React, { FormEvent, useState } from 'react'
 import { Button } from '../ui/button'
 import { updateOrderStatus } from '@/lib/actions/orders/updateOrderStatus'
 import { toast } from 'sonner'
+import { Spinner } from '../ui/spinner'
 
 type OrderFormProps = {
     orderStatus: string
@@ -59,7 +60,11 @@ function OrderForm({ orderStatus, orderId }: OrderFormProps) {
             ))}
         </div>
         <Button type='submit' disabled={currentStatus === selectedStatus || isLoading}>
-            {isLoading ? "Zmienianie..." : "Zmień status"}
+            {isLoading ? (
+                <>
+                    Zmienianie <Spinner />
+                </>
+            ) : "Zmień status"}
         </Button>
     </form>
   )
