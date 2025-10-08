@@ -20,9 +20,17 @@ export async function getOrderById(orderId: string) {
     try {
         const order = await client.fetch(singleOrderQuery, { orderId });
 
-        return order || null
+        return {
+            order: order || null,
+            success: true,
+            message: ""
+        }
     } catch (error) {
         console.error("Error fetching single order:", error)
-        return null
+        return {
+            order: null,
+            success: false,
+            message: "Wystąpił błąd podczas pobierania zamówienia"
+        }
     }
 }

@@ -8,9 +8,18 @@ export async function getFeaturedProducts() {
 
     try {
         const products = await client.fetch(featuredProductsQuery);
-        return products || [];
+
+        return {
+            success: true,
+            products: products || [],
+            message: ""
+        };
     } catch (error) {
         console.log("Error fetching featured products:", error);
-        return [];
+        return {
+            success: false,
+            products: [],
+            message: "Wystąpił błąd podczas pobierania produktów"
+        };
     }
 }

@@ -1,4 +1,5 @@
 import OrderForm from '@/components/forms/OrderForm'
+import ErrorMessage from '@/components/messages/ErrorMessage'
 import OrderDetails from '@/components/orders/OrderDetails'
 import OrderShipping from '@/components/orders/OrderShipping'
 import { Card } from '@/components/ui/card'
@@ -13,7 +14,9 @@ type Props = {
 
 async function SingleOrderPage({ params }: Props) {
     const orderId = (await params).id
-    const order = await getOrderById(orderId)
+    const { order, success, message } = await getOrderById(orderId)
+
+    if (!success) return <ErrorMessage description={message} />
 
     if (!order) return notFound()
 

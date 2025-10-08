@@ -1,3 +1,4 @@
+import ErrorMessage from '@/components/messages/ErrorMessage'
 import SingleProduct from '@/components/products/SingleProduct'
 import { getProductBySlug } from '@/sanity/lib/products/getProductBySlug'
 import { notFound } from 'next/navigation'
@@ -9,7 +10,9 @@ type Props = {
 
 async function SingleProductPage({ params }: Props) {
     const slug = (await params).slug
-    const product = await getProductBySlug(slug)
+    const { product, message, success } = await getProductBySlug(slug)
+
+    if (!success) return <ErrorMessage description={message} />
 
     if (!product) return notFound()
 

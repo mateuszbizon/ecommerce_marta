@@ -7,11 +7,19 @@ export async function getAllProducts() {
     `)
 
     try {
-        const produts = await client.fetch(allProductsQuery)
+        const products = await client.fetch(allProductsQuery)
 
-        return produts || []
+        return {
+            products: products || [],
+            success: true,
+            message: ""
+        }
     } catch (error) {
         console.log("Error fetchting produts:", error)
-        return []
+        return {
+            products: [],
+            success: false,
+            message: "Wystąpił błąd podczas pobierania produktów"
+        }
     }
 }

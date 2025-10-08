@@ -9,9 +9,17 @@ export async function getProductBySlug(productSlug: string) {
     try {
         const product = await client.fetch(productBySlugQuery, { slug: productSlug })
 
-        return product || null
+        return {
+            product: product || null,
+            success: true,
+            message: ""
+        }
     } catch (error) {
         console.error("Error fetching product:", error)
-        return null
+        return {
+            product: null,
+            success: false,
+            message: "Wystąpił błąd podczas pobierania produktu"
+        }
     }
 }

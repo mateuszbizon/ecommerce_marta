@@ -18,9 +18,17 @@ export async function getOrdersBySearch(searchTerm: string | null = "") {
 
         const orders = await client.fetch(query, { term: searchTerm });
 
-        return orders || []
+        return {
+            orders: orders || [],
+            success: true,
+            message: ""
+        }
     } catch (error) {
         console.error("Error fetching orders by search:", error)
-        return []
+        return {
+            orders: [],
+            success: false,
+            message: "Wystąpił błąd podczas pobierania zamówień"
+        }
     }
 }

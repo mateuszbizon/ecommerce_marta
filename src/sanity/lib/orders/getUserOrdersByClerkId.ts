@@ -20,9 +20,17 @@ export async function getUserOrdersByClerkId(clerkId: string) {
     try {
         const orders = await client.fetch(userOrdersQuery, { clerkId })
 
-        return orders || []
+        return {
+            orders: orders || [],
+            success: true,
+            message: ""
+        }
     } catch (error) {
         console.error("Error fetching user orders:", error)
-        return  []
+        return {
+            orders: [],
+            success: false,
+            message: "Wystąpił błąd podczas pobierania zamówień"
+        }
     }
 }
