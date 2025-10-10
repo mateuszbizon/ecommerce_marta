@@ -1,24 +1,28 @@
+"use client"
+
 import { NavItem } from '@/types'
 import React from 'react'
 import { Button, buttonVariants } from '../ui/button'
 import Link from 'next/link'
 import { NavigationMenuContent, NavigationMenuLink, NavigationMenuTrigger } from '../ui/navigation-menu'
+import { usePathname } from 'next/navigation'
 
 type NavCardProps = {
     item: NavItem
 }
 
 function NavCard({ item }: NavCardProps) {
+    const pathname = usePathname()
+    const isLinkActive = item.isLink && item.href === pathname
+
   return (
     <>
         {item.isLink ? (
-            <NavigationMenuLink asChild>
-                <Button className='py-0 px-6 text-foreground hover:text-primary hover:bg-transparent text-lg' variant={"link"} asChild>
-                    <Link href={item.href}>
-                        {item.label}
-                    </Link>
-                </Button>
-            </NavigationMenuLink>
+            <Button className={`py-0 px-6 ${isLinkActive ? "text-primary" : "text-foreground"} hover:text-primary text-lg`} variant={"link"} asChild>
+                <Link href={item.href}>
+                    {item.label}
+                </Link>
+            </Button>
         ) : (
             <>
                 <NavigationMenuTrigger className={`${buttonVariants({ variant: "link" })} py-0 text-foreground hover:text-foreground2 text-lg`}>
