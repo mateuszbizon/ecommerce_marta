@@ -1,3 +1,4 @@
+import Footer from "@/components/common/Footer";
 import Nav from "@/components/common/Nav";
 import { plPL } from "@clerk/localizations";
 import { ClerkProvider } from "@clerk/nextjs";
@@ -13,6 +14,7 @@ export default function RootLayout({
         <main>
             {children}
         </main>
+        <Footer />
     </ClerkProvider>
   );
 }
