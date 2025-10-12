@@ -15,6 +15,9 @@ import { useUser } from '@clerk/nextjs'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '../ui/select'
 import { COUNTRIES } from '@/constants/countries'
 import { Spinner } from '../ui/spinner'
+import InpostWidget from './InpostWidget'
+import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
+import { getShippingInfo } from '@/lib/utils'
 
 type CheckoutFormProps = {
     clientSecret: string;
@@ -26,6 +29,7 @@ function CheckoutForm({ clientSecret }: CheckoutFormProps) {
     const { user } = useUser()
     const { getGroupedItems, getTotalPrice, appliedCoupon } = useBasketStore()
     const [stripeError, setStripeError] = useState("")
+    const [selectedLocker, setSelectedLocker] = useState(null)
     const form = useForm<CheckoutSchema>({
         resolver: zodResolver(checkoutSchema),
         defaultValues: {
@@ -36,9 +40,11 @@ function CheckoutForm({ clientSecret }: CheckoutFormProps) {
             street: "",
             postalCode: "",
             city: "",
-            phoneNumber: ""
+            phoneNumber: "",
+            deliveryMethod: undefined,
         }
     })
+    const deliveryMethod = form.watch("deliveryMethod")
 
     async function onSubmit(data: CheckoutSchema) {
         if (!stripe || !elements) {
@@ -52,7 +58,7 @@ function CheckoutForm({ clientSecret }: CheckoutFormProps) {
             body: JSON.stringify({
                 clientSecret,
                 shipping: data,
-                total: getTotalPrice(),
+                total: (getTotalPrice() + getShippingInfo(deliveryMethod).price).toFixed(2),
                 currency: CURRENCY,
                 amountDiscount: appliedCoupon ? appliedCoupon.amountDiscount : 0,
                 products: getGroupedItems().map(item => ({
@@ -83,18 +89,46 @@ function CheckoutForm({ clientSecret }: CheckoutFormProps) {
   return (
     <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="flex flex-col lg:flex-row gap-x-5 gap-y-10">
-            <Card className='grow'>
-                <p className='bigger-text'>Dane do wysyłki</p>
-                <div className='space-y-8'>
-                    <div className='grid lg:grid-cols-2 gap-x-5 gap-y-8'>
+            <div className='grow space-y-10'>
+                <Card>
+                    <p className='bigger-text'>Dane do wysyłki</p>
+                    <div className='space-y-8'>
+                        <div className='grid lg:grid-cols-2 gap-x-5 gap-y-8'>
+                            <FormField
+                                control={form.control}
+                                name="name"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Imię</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Imię" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="surname"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Nazwisko</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Nazwisko" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
                         <FormField
                             control={form.control}
-                            name="name"
+                            name="email"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Imię</FormLabel>
+                                    <FormLabel>Adres email</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Imię" {...field} />
+                                        <Input placeholder="Adres email" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
@@ -102,117 +136,155 @@ function CheckoutForm({ clientSecret }: CheckoutFormProps) {
                         />
                         <FormField
                             control={form.control}
-                            name="surname"
+                            name="country"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Nazwisko</FormLabel>
+                                    <FormLabel>Kraj</FormLabel>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <FormControl>
+                                            <SelectTrigger className='w-full'>
+                                                <SelectValue placeholder="Wybierz kraj" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            {COUNTRIES.map(item => (
+                                                <SelectItem key={item.value} value={item.value}>
+                                                    {item.label}
+                                                </SelectItem>
+                                            ))}
+                                        </SelectContent>
+                                    </Select>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="street"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Ulica</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Nazwisko" {...field} />
+                                        <Input placeholder="Ulica" {...field} />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <div className='grid lg:grid-cols-2 gap-x-5 gap-y-8'>
+                            <FormField
+                                control={form.control}
+                                name="city"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Miasto</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Miasto" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                            <FormField
+                                control={form.control}
+                                name="postalCode"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Kod pocztowy</FormLabel>
+                                        <FormControl>
+                                            <Input placeholder="Kod pocztowy" {...field} />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                        <FormField
+                            control={form.control}
+                            name="phoneNumber"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Numer telefonu</FormLabel>
+                                    <FormControl>
+                                        <Input placeholder="Numer telefonu" {...field} />
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
                     </div>
+                </Card>
+                <Card>
+                    <p className='bigger-text'>Wysyłka</p>
                     <FormField
                         control={form.control}
-                        name="email"
+                        name="deliveryMethod"
                         render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Adres email</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Adres email" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
+                        <FormItem>
+                            <FormLabel>Metoda wysyłki</FormLabel>
+                            <FormControl>
+                                <RadioGroup onValueChange={field.onChange} defaultValue={field.value}>
+                                    <div className="space-y-5">
+                                        <div className="flex items-center gap-2">
+                                            <RadioGroupItem value="courier" id="courier" />
+                                            <FormLabel htmlFor="courier">Kurier DPD – {getShippingInfo("courier").price} {CURRENCY_VALUE}</FormLabel>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <RadioGroupItem value="inpost" id="inpost" />
+                                            <FormLabel htmlFor="inpost">InPost Paczkomat – {getShippingInfo("inpost").price} {CURRENCY_VALUE}</FormLabel>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <RadioGroupItem value="inpost-courier" id="inpost-courier" />
+                                            <FormLabel htmlFor="inpost-courier">InPost Kurier – {getShippingInfo("inpost-courier").price} {CURRENCY_VALUE}</FormLabel>
+                                        </div>
+                                        <div className="flex items-center gap-2">
+                                            <RadioGroupItem value="own" id="own" />
+                                            <FormLabel htmlFor="own">Odbiór własny</FormLabel>
+                                        </div>
+                                    </div>
+                                </RadioGroup>
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
                         )}
                     />
-                    <FormField
-                        control={form.control}
-                        name="country"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Kraj</FormLabel>
-                                <Select onValueChange={field.onChange} defaultValue={field.value}>
-                                    <FormControl>
-                                        <SelectTrigger className='w-full'>
-                                            <SelectValue placeholder="Wybierz kraj" />
-                                        </SelectTrigger>
-                                    </FormControl>
-                                    <SelectContent>
-                                        {COUNTRIES.map(item => (
-                                            <SelectItem key={item.value} value={item.value}>
-                                                {item.label}
-                                            </SelectItem>
-                                        ))}
-                                    </SelectContent>
-                                </Select>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <FormField
-                        control={form.control}
-                        name="street"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Ulica</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Ulica" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                    <div className='grid lg:grid-cols-2 gap-x-5 gap-y-8'>
+
+                    {/* {deliveryMethod === "inpost" && (
                         <FormField
                             control={form.control}
-                            name="city"
+                            name="inpostLocker"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Miasto</FormLabel>
+                                    <FormLabel>Wybierz paczkomat</FormLabel>
                                     <FormControl>
-                                        <Input placeholder="Miasto" {...field} />
+                                        <div>
+                                            <p className="text-sm text-muted-foreground">
+                                                Wybierz punkt odbioru z mapy poniżej:
+                                            </p>
+                                            <InpostWidget
+                                                token={process.env.NEXT_PUBLIC_INPOST_GEO_TOKEN!}
+                                                onSelect={(point) => field.onChange(point.name)}
+                                            />
+                                            {field.value && (
+                                                <p className="mt-2 text-sm font-medium">
+                                                    Wybrany paczkomat: {field.value.name}
+                                                </p>
+                                            )}
+                                        </div>
                                     </FormControl>
                                     <FormMessage />
                                 </FormItem>
                             )}
                         />
-                        <FormField
-                            control={form.control}
-                            name="postalCode"
-                            render={({ field }) => (
-                                <FormItem>
-                                    <FormLabel>Kod pocztowy</FormLabel>
-                                    <FormControl>
-                                        <Input placeholder="Kod pocztowy" {...field} />
-                                    </FormControl>
-                                    <FormMessage />
-                                </FormItem>
-                            )}
-                        />
-                    </div>
-                    <FormField
-                        control={form.control}
-                        name="phoneNumber"
-                        render={({ field }) => (
-                            <FormItem>
-                                <FormLabel>Numer telefonu</FormLabel>
-                                <FormControl>
-                                    <Input placeholder="Numer telefonu" {...field} />
-                                </FormControl>
-                                <FormMessage />
-                            </FormItem>
-                        )}
-                    />
-                </div>
-            </Card>
+                    )} */}
+                </Card>
+            </div>
             <Card className='w-full lg:w-120 lg:h-fit lg:sticky lg:top-nav-height'>
                 <p className='bigger-text'>Płatność</p>
                 <p className='flex justify-between bigger-text font-bold'>
                     <span>Suma:</span>
                     <span>
-                        {getTotalPrice().toFixed(2)} {CURRENCY_VALUE}
+                        {(getTotalPrice() + getShippingInfo(deliveryMethod).price).toFixed(2)} {CURRENCY_VALUE}
                     </span>
                 </p>
                 <PaymentElement />
