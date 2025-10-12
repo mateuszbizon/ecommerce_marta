@@ -4,3 +4,4 @@ export const ADMIN_EMAIL = "mateuszbizon2000@gmail.com"
 export const PHONE_NUMBER = "+48 613 940 380"
 export const EMAIL = "email@email.pl"
 export const LOCATION = "ul. Ulicowa 59, 59-900 Zgorzelec"
+export const TAX = 5

@@ -1,3 +1,4 @@
+import { calculateTax } from "@/lib/calculateTax"
 import { Product } from "@/sanity/types"
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
@@ -30,6 +31,7 @@ const useBasketStore = create<BasketState>()(
         (set, get) => ({
             items: [],
             addItem: (product) => set(state => {
+                const newProduct = { ...product, price: calculateTax(product.price) } as Product
                 const existingItem = state.items.find(item => item.product._id === product._id)
 
                 if (existingItem) {
@@ -38,7 +40,7 @@ const useBasketStore = create<BasketState>()(
                     }
                 } else {
                     return {
-                        items: [...state.items, { product, quantity: 1 }]
+                        items: [...state.items, { product: newProduct, quantity: 1 }]
                     }
                 }
             }),
