@@ -153,6 +153,20 @@ export const orderType = defineType({
             type: "reference",
             to: [{ type: "user" }],
         }),
+        defineField({
+            name: "deliveryMethod",
+            title: "Metoda dostawy",
+            type: "string",
+            options: {
+                list: [
+                    { title: "Kurier", value: "courier" },
+                    { title: "InPost Paczkomat", value: "inpost" },
+                    { title: "InPost Kurier", value: "inpost-courier" },
+                    { title: "Odbiór własny", value: "own" },
+                ]
+            },
+            validation: (rule) => rule.required()
+        }),
     ],
     preview: {
         select: {
