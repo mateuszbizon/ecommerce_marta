@@ -4,6 +4,7 @@ import { client } from "../client";
 export async function getOrdersBySearch(searchTerm: string | null = "", page: number = 1, limit: number = 5) {
     const start = (page - 1) * limit;
     const end = start + limit;
+    const term = searchTerm ? `*${searchTerm}*` : "";
 
     try {
         const query = defineQuery(`
@@ -32,8 +33,8 @@ export async function getOrdersBySearch(searchTerm: string | null = "", page: nu
             )])
         `)
 
-        const orders = await client.fetch(query, { term: searchTerm, start, end });
-        const total = await client.fetch(countQuery, { term: searchTerm })
+        const orders = await client.fetch(query, { term: searchTerm ? term : searchTerm, start, end });
+        const total = await client.fetch(countQuery, { term: searchTerm ? term : searchTerm })
 
         return {
             orders: orders || [],
