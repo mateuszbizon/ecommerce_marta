@@ -3,6 +3,7 @@ import { writeClient } from "@/sanity/lib/writeClient";
 import { NextResponse } from "next/server";
 import Stripe from "stripe";
 import { getOrderByPaymentIntent } from "@/sanity/lib/orders/getOrderByPaymentIntent";
+import { getShippingInfo } from "@/lib/utils";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
 
@@ -63,7 +64,7 @@ export async function POST(req: Request) {
             customerPostalCode: shipping.postalCode,
             customerCity: shipping.city,
             customerPhoneNumber: shipping.phoneNumber,
-            deliveryMethod: shipping.deliveryMethod,
+            deliveryMethod: getShippingInfo(shipping.deliveryMethod).name,
             totalPrice: total,
             currency,
             amountDiscount,
