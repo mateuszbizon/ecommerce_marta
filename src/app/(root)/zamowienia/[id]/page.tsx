@@ -51,6 +51,7 @@ async function SingleOrderPage({ params }: Props) {
                 customerPhoneNumber={order.customerPhoneNumber}
                 customerPostalCode={order.customerPostalCode}
                 customerStreet={order.customerStreet}
+                deliveryMethod={order.deliveryMethod}
             />
         </Container>
     </section>

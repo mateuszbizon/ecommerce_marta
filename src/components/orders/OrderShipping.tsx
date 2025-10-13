@@ -2,9 +2,9 @@ import { Order } from '@/sanity/types'
 import React from 'react'
 import { Card } from '../ui/card'
 
-type OrderShippingProps = Pick<Order, "customerCountry" | "customerCity" | "customerStreet" | 'customerPostalCode' | "customerPhoneNumber">
+type OrderShippingProps = Pick<Order, "customerCountry" | "customerCity" | "customerStreet" | 'customerPostalCode' | "customerPhoneNumber" | "deliveryMethod">
 
-function OrderShipping({ customerCity, customerCountry, customerPhoneNumber, customerPostalCode, customerStreet }: OrderShippingProps) {
+function OrderShipping({ customerCity, customerCountry, customerPhoneNumber, customerPostalCode, customerStreet, deliveryMethod }: OrderShippingProps) {
   return (
     <Card>
         <h2 className='bigger-text'>Informacje do wysyłki</h2>
@@ -33,10 +33,10 @@ function OrderShipping({ customerCity, customerCountry, customerPhoneNumber, cus
                 <span>Numer telefonu</span>
                 <span className='font-semibold'>{customerPhoneNumber}</span>
             </div>
-            {/* <div className='flex flex-col gap-1 little-bigger-text md:text-right'>
-                <span>Kod pocztowy</span>
-                <span className='font-semibold'>{customerPostalCode}</span>
-            </div> */}
+            <div className='flex flex-col gap-1 little-bigger-text md:text-right'>
+                <span>Metoda wysyłki</span>
+                <span className='font-semibold'>{deliveryMethod}</span>
+            </div>
         </div>
     </Card>
   )

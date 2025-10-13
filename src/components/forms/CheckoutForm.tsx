@@ -58,7 +58,7 @@ function CheckoutForm({ clientSecret }: CheckoutFormProps) {
             body: JSON.stringify({
                 clientSecret,
                 shipping: data,
-                total: getTotalPrice() + getShippingInfo(deliveryMethod).price,
+                total: Number((getTotalPrice() + getShippingInfo(deliveryMethod).price).toFixed(2)),
                 currency: CURRENCY,
                 amountDiscount: appliedCoupon ? appliedCoupon.amountDiscount : 0,
                 products: getGroupedItems().map(item => ({

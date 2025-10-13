@@ -25,26 +25,20 @@ export async function POST(req: Request) {
 
         let updatedOrder
 
-        if (!paymentIntent.metadata.orderId) {
-            const order = await getOrderByPaymentIntent(paymentIntent.id)
+        const order = await getOrderByPaymentIntent(paymentIntent.id)
             
-            if (order?._id) {
-                updatedOrder = await writeClient.patch(order._id)
-                    .set({ status: "paid", currency: paymentIntent.currency })
-                    .commit();
-            }
-        } else {
-            updatedOrder = await writeClient.patch(paymentIntent.metadata.orderId)
+        if (order) {
+            updatedOrder = await writeClient.patch(order._id)
                 .set({ status: "paid", currency: paymentIntent.currency })
                 .commit();
-        }
 
-        await sendOrderConfirmation({
-            orderNumber: updatedOrder?.orderNumber,
-            customerEmail: updatedOrder?.customerEmail,
-            customerName: updatedOrder?.customerName,
-            total: updatedOrder?.totalPrice
-        })
+            await sendOrderConfirmation({
+                orderNumber: updatedOrder?.orderNumber,
+                customerEmail: updatedOrder?.customerEmail,
+                customerName: updatedOrder?.customerName,
+                total: updatedOrder?.totalPrice
+            })
+        }
     }
 
     return NextResponse.json({ received: "Webhook received" })

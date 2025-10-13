@@ -109,6 +109,7 @@ export type Order = {
     _weak?: boolean;
     [internalGroqTypeReferenceTo]?: "user";
   };
+  deliveryMethod?: string;
 };
 
 export type User = {
@@ -327,6 +328,7 @@ export type SingleOrderQueryResult = {
     _weak?: boolean;
     [internalGroqTypeReferenceTo]?: "user";
   };
+  deliveryMethod?: string;
 } | null;
 
 // Source: ./src/sanity/lib/orders/getOrderByPaymentIntent.ts
@@ -377,6 +379,7 @@ export type QueryResult = Array<{
     _weak?: boolean;
     [internalGroqTypeReferenceTo]?: "user";
   };
+  deliveryMethod?: string;
 }>;
 // Variable: countQuery
 // Query: count(*[_type == "order" && (                !defined($term) ||                 orderNumber match $term ||                customerName match $term ||                customerEmail match $term ||                customerStreet match $term ||                customerPostalCode match $term ||                customerCity match $term ||                customerPhoneNumber match $term            )])
@@ -433,6 +436,7 @@ export type UserOrdersQueryResult = Array<{
     _weak?: boolean;
     [internalGroqTypeReferenceTo]?: "user";
   };
+  deliveryMethod?: string;
 }>;
 
 // Source: ./src/sanity/lib/products/getAllProducts.ts

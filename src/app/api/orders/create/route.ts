@@ -33,7 +33,7 @@ export async function POST(req: Request) {
 
     let order;
 
-    if (existingOrder?._id) {
+    if (existingOrder) {
         order = await writeClient.patch(existingOrder._id)
             .set({
                 status: "pending",
@@ -75,10 +75,6 @@ export async function POST(req: Request) {
             user: userRef,
         });
     }
-
-    await stripe.paymentIntents.update(piId, {
-        metadata: { orderId: order._id },
-    });
 
     return NextResponse.json({ orderId: order._id });
   } catch (error: any) {
