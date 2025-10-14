@@ -18,6 +18,7 @@ import { Spinner } from '../ui/spinner'
 import InpostWidget from './InpostWidget'
 import { RadioGroup, RadioGroupItem } from '../ui/radio-group'
 import { getShippingInfo } from '@/lib/utils'
+import RequireStar from '../ui/require-star'
 
 type CheckoutFormProps = {
     clientSecret: string;
@@ -99,7 +100,7 @@ function CheckoutForm({ clientSecret }: CheckoutFormProps) {
                                 name="name"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Imię</FormLabel>
+                                        <FormLabel>Imię <RequireStar /></FormLabel>
                                         <FormControl>
                                             <Input placeholder="Imię" {...field} />
                                         </FormControl>
@@ -112,7 +113,7 @@ function CheckoutForm({ clientSecret }: CheckoutFormProps) {
                                 name="surname"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Nazwisko</FormLabel>
+                                        <FormLabel>Nazwisko <RequireStar /></FormLabel>
                                         <FormControl>
                                             <Input placeholder="Nazwisko" {...field} />
                                         </FormControl>
@@ -126,7 +127,7 @@ function CheckoutForm({ clientSecret }: CheckoutFormProps) {
                             name="email"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Adres email</FormLabel>
+                                    <FormLabel>Adres email <RequireStar /></FormLabel>
                                     <FormControl>
                                         <Input placeholder="Adres email" {...field} />
                                     </FormControl>
@@ -139,7 +140,7 @@ function CheckoutForm({ clientSecret }: CheckoutFormProps) {
                             name="country"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Kraj</FormLabel>
+                                    <FormLabel>Kraj <RequireStar /></FormLabel>
                                     <Select onValueChange={field.onChange} defaultValue={field.value}>
                                         <FormControl>
                                             <SelectTrigger className='w-full'>
@@ -163,7 +164,7 @@ function CheckoutForm({ clientSecret }: CheckoutFormProps) {
                             name="street"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Ulica</FormLabel>
+                                    <FormLabel>Ulica <RequireStar /></FormLabel>
                                     <FormControl>
                                         <Input placeholder="Ulica" {...field} />
                                     </FormControl>
@@ -177,7 +178,7 @@ function CheckoutForm({ clientSecret }: CheckoutFormProps) {
                                 name="city"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Miasto</FormLabel>
+                                        <FormLabel>Miasto <RequireStar /></FormLabel>
                                         <FormControl>
                                             <Input placeholder="Miasto" {...field} />
                                         </FormControl>
@@ -190,7 +191,7 @@ function CheckoutForm({ clientSecret }: CheckoutFormProps) {
                                 name="postalCode"
                                 render={({ field }) => (
                                     <FormItem>
-                                        <FormLabel>Kod pocztowy</FormLabel>
+                                        <FormLabel>Kod pocztowy <RequireStar /></FormLabel>
                                         <FormControl>
                                             <Input placeholder="Kod pocztowy" {...field} />
                                         </FormControl>
@@ -204,7 +205,7 @@ function CheckoutForm({ clientSecret }: CheckoutFormProps) {
                             name="phoneNumber"
                             render={({ field }) => (
                                 <FormItem>
-                                    <FormLabel>Numer telefonu</FormLabel>
+                                    <FormLabel>Numer telefonu <RequireStar /></FormLabel>
                                     <FormControl>
                                         <Input placeholder="Numer telefonu" {...field} />
                                     </FormControl>
@@ -221,7 +222,7 @@ function CheckoutForm({ clientSecret }: CheckoutFormProps) {
                         name="deliveryMethod"
                         render={({ field }) => (
                         <FormItem>
-                            <FormLabel>Metoda wysyłki</FormLabel>
+                            <FormLabel>Metoda wysyłki <RequireStar /></FormLabel>
                             <FormControl>
                                 <RadioGroup onValueChange={field.onChange} defaultValue={field.value}>
                                     <div className="space-y-5">
