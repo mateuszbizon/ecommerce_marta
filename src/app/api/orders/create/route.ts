@@ -76,6 +76,13 @@ export async function POST(req: Request) {
         });
     }
 
+    await stripe.paymentIntents.update(piId, {
+        amount: Math.round(total * 100),
+        metadata: {
+            orderId: order._id
+        }
+    })
+
     return NextResponse.json({ orderId: order._id });
   } catch (error: any) {
     console.error(error);

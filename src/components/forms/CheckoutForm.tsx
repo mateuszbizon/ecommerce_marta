@@ -70,18 +70,22 @@ function CheckoutForm({ clientSecret }: CheckoutFormProps) {
             }),
         });
 
-        const { orderId } = await res.json();
+        const result = await res.json();
 
-        const { error } = await stripe.confirmPayment({
-            elements,
-            confirmParams: {
-                return_url: `${window.location.origin}/success?orderid=${orderId}`,
-            },
-        })
+        if (res.ok && result.orderId) {
+            const { error } = await stripe.confirmPayment({
+                elements,
+                confirmParams: {
+                    return_url: `${window.location.origin}/success?orderid=${result.orderId}`,
+                },
+            });
 
-        if (error && error.message) {
-            console.error(error.message)
-            setStripeError(error.message)
+            if (error && error.message) {
+                console.error(error.message);
+                setStripeError(error.message);
+            }
+        } else {
+            setStripeError("Błąd podczas tworzenia zamówienia.");
         }
 
         console.log(data)

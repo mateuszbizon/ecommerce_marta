@@ -24,26 +24,30 @@ export async function POST(req: Request) {
         console.log(paymentIntent)
 
         let updatedOrder
-
-        const order = await getOrderByPaymentIntent(paymentIntent.id)
             
-        if (order) {
-            updatedOrder = await writeClient.patch(order._id)
+        if (paymentIntent.metadata.orderId) {
+            updatedOrder = await writeClient.patch(paymentIntent.metadata.orderId)
                 .set({ status: "paid", currency: paymentIntent.currency })
                 .commit();
+        } else {
+            const order = await getOrderByPaymentIntent(paymentIntent.id)
 
-            await sendOrderConfirmation({
-                orderNumber: updatedOrder?.orderNumber,
-                customerEmail: updatedOrder?.customerEmail,
-                customerName: updatedOrder?.customerName,
-                total: updatedOrder?.totalPrice
-            })
+            updatedOrder = await writeClient.patch(order?._id!)
+                .set({ status: "paid", currency: paymentIntent.currency })
+                .commit();
         }
+
+        await sendOrderConfirmation({
+            orderNumber: updatedOrder?.orderNumber,
+            customerEmail: updatedOrder?.customerEmail,
+            customerName: updatedOrder?.customerName,
+            total: updatedOrder?.totalPrice
+        })
     }
 
     return NextResponse.json({ received: "Webhook received" })
   } catch (err: any) {
     console.error("Webhook error", err.message)
-    return new NextResponse(`Webhook Error: ${err.message}`, { status: 400 })
+    return new NextResponse(`Webhook Error: ${err.message}`, { status: 500 })
   }
 }
