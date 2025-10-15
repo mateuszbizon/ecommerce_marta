@@ -8,6 +8,7 @@ import { Button } from '../ui/button'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import useBasketStore from '@/store/basket'
+import { ClerkLoaded, SignedIn} from '@clerk/nextjs'
 
 function SuccessOrder() {
     const searchParams = useSearchParams()
@@ -31,11 +32,15 @@ function SuccessOrder() {
                 <h1 className='heading3 text-center'>Dziękujemy za Twoje zamówienie</h1>
                 <p className='bigger-text text-center'>Twoje zamówione zostałe potwierdzone i wkrótce zostanie wysłane</p>
                 <div className='flex justify-center flex-wrap gap-5'>
-                    <Button variant={"success"} asChild>
-                        <Link href={"/twoje-zamowienia"}>
-                            Zobacz swoje zamówienia
-                        </Link>
-                    </Button>
+                    <ClerkLoaded>
+                        <SignedIn>
+                            <Button variant={"success"} asChild>
+                                <Link href={"/twoje-zamowienia"}>
+                                    Zobacz swoje zamówienia
+                                </Link>
+                            </Button>
+                        </SignedIn>
+                    </ClerkLoaded>
                     <Button asChild>
                         <Link href={"/sklep"}>
                             Kontynuuj zakupy
