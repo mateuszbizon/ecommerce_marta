@@ -1,7 +1,8 @@
 import { defineQuery } from "next-sanity";
 import { client } from "../client";
+import { PAGE_LIMIT } from "@/constants";
 
-export async function getOrdersBySearch(searchTerm: string | null = "", page: number = 1, limit: number = 5) {
+export async function getOrdersBySearch(searchTerm: string | null = "", page: number = 1, limit: number = PAGE_LIMIT) {
     const start = (page - 1) * limit;
     const end = start + limit;
     const term = searchTerm ? `*${searchTerm}*` : "";

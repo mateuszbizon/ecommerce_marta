@@ -5,6 +5,7 @@ import ErrorMessage from '@/components/messages/ErrorMessage'
 import { Card } from '@/components/ui/card'
 import Container from '@/components/ui/container'
 import { Pagination, PaginationContent, PaginationEllipsis, PaginationItem, PaginationLink, PaginationNext, PaginationPrevious } from '@/components/ui/pagination'
+import { PAGE_LIMIT } from '@/constants'
 import { buildUrl } from '@/lib/buildUrl'
 import { getOrdersBySearch } from '@/sanity/lib/orders/getOrdersBySearch'
 import React from 'react'
@@ -18,7 +19,7 @@ async function OrdersAdminPage({ searchParams }: Props) {
     const page = Number((await searchParams).page) || 1;
     const params = { search: query || null }
     const { orders, success, message, total } = await getOrdersBySearch(params.search, page)
-    const lastPage = Math.ceil(total / 5)
+    const lastPage = Math.ceil(total / PAGE_LIMIT)
 
     if (!success) return <ErrorMessage description={message} />
 
