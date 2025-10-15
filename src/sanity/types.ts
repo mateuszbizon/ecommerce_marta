@@ -573,6 +573,11 @@ export type UserQueryResult = {
   isAdmin: boolean | null;
 } | null;
 
+// Source: ./src/sanity/lib/users/getUserPaidOrdersCount.ts
+// Variable: userPaidOrdersCountQuery
+// Query: count(*[_type == "order" && user->clerkId == $clerkId && status == "paid"])
+export type UserPaidOrdersCountQueryResult = number;
+
 // Query TypeMap
 import "@sanity/client";
 declare module "@sanity/client" {
@@ -587,5 +592,6 @@ declare module "@sanity/client" {
     "\n        *[_type == \"product\" && slug.current == $slug][0]    \n    ": ProductBySlugQueryResult;
     "\n        *[_type == \"sale\" && couponCode == $code][0]    \n    ": CouponQueryResult;
     "\n        *[_type == \"user\" && clerkId == $clerkId][0]{_id, isAdmin}    \n    ": UserQueryResult;
+    "\n        count(*[_type == \"order\" && user->clerkId == $clerkId && status == \"paid\"])\n    ": UserPaidOrdersCountQueryResult;
   }
 }
