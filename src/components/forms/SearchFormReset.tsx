@@ -5,7 +5,11 @@ import Link from 'next/link'
 import React from 'react'
 import { Button } from '../ui/button'
 
-function SearchFormReset() {
+type SearchFormResetProps = {
+    href: string
+}
+
+function SearchFormReset({ href }: SearchFormResetProps) {
     function reset() {
         const form = document.querySelector(".search-form") as HTMLFormElement
 
@@ -16,7 +20,7 @@ function SearchFormReset() {
 
   return (
     <Button type='reset' variant={"destructive"} onClick={reset} asChild>
-        <Link href={"/zamowienia"}>
+        <Link href={href}>
             Wyczyść <X />
         </Link>
     </Button>
