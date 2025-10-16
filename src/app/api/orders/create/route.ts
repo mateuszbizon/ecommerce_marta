@@ -29,6 +29,10 @@ export async function POST(req: Request) {
 
     const piId = clientSecret.split("_secret")[0];
 
+    await stripe.paymentIntents.update(piId, {
+        amount: Math.round(total * 100),
+    })
+
     const existingOrder = await getOrderByPaymentIntent(piId)
 
     let order;
@@ -77,7 +81,6 @@ export async function POST(req: Request) {
     }
 
     await stripe.paymentIntents.update(piId, {
-        amount: Math.round(total * 100),
         metadata: {
             orderId: order._id
         }
