@@ -3,7 +3,7 @@ import { Jost } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
 
-export const jost = Jost({
+const jost = Jost({
   subsets: ["latin"],
   variable: "--font-jost",
 });
